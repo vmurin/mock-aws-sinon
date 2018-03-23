@@ -56,7 +56,7 @@ var stubRequestSend = function() {
         return;
     }
 
-    sinon.stub(AWS.Request.prototype, "send", processRequest);
+    sinon.stub(AWS.Request.prototype, "send").callsFake(processRequest);
     stubbedRequestSend = true;
 }
 
@@ -70,7 +70,7 @@ module.exports = function(service, method, func) {
         
         cachedStubs[stubKey] = function() {} // is never run
 
-        sinon.stub(cachedStubs, stubKey, func);
+        sinon.stub(cachedStubs, stubKey).callsFake(func);
 
         cachedStubs[stubKey].restore = function() {
             // override default stub behaviour here to account for our
